@@ -1,0 +1,37 @@
+
+					<li>
+						<a href="/">トップ
+							<% #unless current_user.nil? %>
+								<% #due_over = Task.had_by(current_user).due_over.count %>
+								<% #if due_over != 0 %>
+									<span><%= #due_over %><span>
+								<% #end %>
+							<% #end %>
+						</a>
+					</li>
+
+					<li>
+					<a href="/tasks/done">done</a></li>
+					<li>
+						<a href="/tasks/over">締め切り済
+							<% #unless current_user.nil? %>
+								<% #due_over = Task.had_by(current_user).due_over.count %>
+								<% #if due_over != 0 %>
+									<span><%= #due_over %><span>
+								<% #end %>
+							<% #end %>
+						</a>
+					</li>
+
+					<% #@lists.each do |list| %>
+						<li>
+							<a href="/?list=<%= list.id %>"><%= list.name %>
+								<% #unless current_user.nil? %>
+								<% #due_over = list.tasks.had_by(current_user).due_over.count %>
+								<% #if due_over != 0 %>
+									<span><%= #due_over %><span>
+								<% #end %>
+							<% #end %>
+						</a>
+					</li>
+					<% #end %>
