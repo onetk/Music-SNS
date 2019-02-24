@@ -31,29 +31,24 @@ end
 
 post '/signup' do
 
+  if params[:file] =="" then
+    img_url = "https://res.cloudinary.com/dcksv5swp/image/upload/v1549968178/qusyecxamstqbg0lejdz.png"
+
+  else
+    upload = Cloudinary::Uploader.upload(params[:file].pathmap)
+    img_url=upload["url"]
+    # image_upload(params[:uploaded])
+  end
+
   user = User.create(
     name: CGI.escapeHTML(params[:name]),
     password: params[:password],
     password_confirmation: params[:password_confirmation],
-    profile_image: "https://res.cloudinary.com/dcksv5swp/image/upload/v1549968178/qusyecxamstqbg0lejdz.png"
+    profile_image: img_url
   )
 
-  if params[:uploaded_data] !="" then
 
-    def image_upload(img)
-      logger.info "upload now"
-
-      upload = Cloudinary::Uploader.upload(img.pathmap)
-      contents = User.last
-
-      contents.update_attribute(:img, upload['url'])
-    end
-
-    image_upload(params[:uploaded_data])
-
-  end
-
-
+  # rackup config.ru -o 0.0.0.0
   if user.persisted?
     session[:user] = user.id
   end
@@ -88,7 +83,15 @@ post '/post' do
   if current_user.nil? then
     redirect '/'
   else
-    current_user.posts.create(artist: params[:artist], album: params[:album],track: params[:track],sample_image: params[:sample_image], image_url: params[:image_url], sample_url: params[:sample_url], comment: CGI.escapeHTML(params[:comment]), user_name: current_user.name, user_id: current_user.id)
+    current_user.posts.create(artist: params[:artist],
+                              album: params[:album],
+                              track: params[:track],
+                              sample_image: params[:sample_image],
+                              image_url: params[:image_url],
+                              sample_url: params[:sample_url],
+                              comment: CGI.escapeHTML(params[:comment]),
+                              user_name: current_user.name,
+                              user_id: current_user.id)
   end
 
   redirect '/'

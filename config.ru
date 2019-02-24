@@ -3,12 +3,12 @@ Bundler.require
 require "rubygems"
 require './app'
 
-config_file './config.yml'
+Dotenv.load
 
 Cloudinary.config do |config|
-  config.cloud_name = settings.cloud_name
-  config.api_key = settings.api_key
-  config.api_secret = settings.api_secret
+  config.cloud_name = ENV["CLOUD_NAME"]
+  config.api_key    = ENV["CLOUDINARY_API_KEY"]
+  config.api_secret = ENV["CLOUDINARY_API_SECRET"]
 end
 
 run Sinatra::Application
