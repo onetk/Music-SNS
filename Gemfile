@@ -15,6 +15,8 @@ gem 'sinatra-activerecord'
 
 gem 'bcrypt'
 
+gem 'itunes-search-api'
+
 group :development do
   gem 'sqlite3','~> 1.3.6'
 end

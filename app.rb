@@ -5,6 +5,9 @@ require 'sinatra/reloader' if development?
 require 'sinatra/activerecord'
 require './models'
 
+require 'itunes-search-api'
+require 'json'
+
 enable :sessions
 
 helpers do
@@ -44,7 +47,8 @@ post '/signup' do
   user = User.create(
     name: params[:name],
     password: params[:password],
-    password_confirmation: params[:password_confirmation]
+    password_confirmation: params[:password_confirmation],
+    profile_image: "https://res.cloudinary.com/dcksv5swp/image/upload/v1549968178/qusyecxamstqbg0lejdz.png"
   )
   if user.persisted?
     session[:user] = user.id
@@ -53,10 +57,6 @@ post '/signup' do
 end
 
 # ---------------------------------------------------------- #
-
-get '/signin' do
-  erb :sign_in
-end
 
 post '/signin' do
   user = User.find_by(name: params[:name])
@@ -143,4 +143,31 @@ get '/tasks/done' do
   @lists = List.all
   @tasks = current_user.tasks.where(completed: true)
   erb :index
+end
+
+
+# ---------------------------------------------------------- #
+
+
+get "/search" do
+
+  @Lists=""
+  erb :search
+
+end
+
+post "/search" do
+
+  if params[:keyword].match(/.+/) then
+    @Lists=ITunesSearchAPI.search(
+      :term    => params[:keyword],
+      :media   => 'music',
+      :limit  => '10')
+    # ).each do |item|
+    #   p item
+    # end
+    p @Lists[0]["artistName"]
+  end
+  erb :search
+  # redirect '/search'
 end

@@ -1,0 +1,36 @@
+<section class="center-vertical">
+
+	<h2>検索フォーム</h2>
+
+    <section class="center-vertical">
+      <form action="/search" method="post">
+        <input type="text" name="keyword" placeholder="アーティスト名">
+        <input type="submit" value="検索">
+      </form>
+    </section>
+
+	<h2>検索結果</h2>
+    <section class="center-horizontal">
+      <% if @Lists.nil? || @Lists=="" then %>
+        <h4> 検索結果がありません </h4>
+      <% else %>
+        <% @Lists.each do |music| %>
+          <div class="post center-vertical">
+
+            <img src="https://is2-ssl.mzstatic.com/image/thumb/Music/v4/07/ef/75/07ef759f-ee5c-191c-86b9-0f065cd1b5e9/source/100x100bb.jpg" style="padding-bottom:10px;" >
+            <p><%= music["artistName"] %></p>
+            <p><%= music["collectionName"] %></p>
+            <p><%= music["trackName"] %></p>
+
+            <form class="form-inline" action="/post" method="post">
+                <input class="form-size" name="comment" placeholder="コメント">
+                <input class="form-size" type="submit" value="投稿">
+            </form>
+
+          </div>
+
+        <% end %>
+      <% end %>
+    </section>
+
+</section>
