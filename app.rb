@@ -70,8 +70,6 @@ post '/post' do
   if current_user.nil? then
     redirect '/'
   else
-
-
     current_user.posts.create(artist: params[:artist], album: params[:album],track: params[:track],sample_image: params[:sample_image], image_url: params[:image_url], sample_url: params[:sample_url], comment: CGI.escapeHTML(params[:comment]), user_name: current_user.name, user_id: current_user.id)
   end
 
@@ -81,37 +79,23 @@ end
 
 # ---------------------------------------------------------- #
 
-post '/tasks/:id' do
-  task = Task.find(params[:id])
-  list = List.find(params[:list])
-  date = params[:due_date].split('-')
+post '/posts/:id' do
+  post = Post.find(params[:id])
 
-  if Date.valid_date?(date[0].to_i, date[1].to_i, date[2].to_i)
-    task.title = CGI.escapeHTML(params[:title])
-    task.due_date = Date.parse(params[:due_date])
-    task.list_id = list.id
-    task.save
-    redirect '/'
-  else
-    redirect "/tasks/#{task.id}/edit"
-  end
+  post.comment = CGI.escapeHTML(params[:comment])
+  post.save
+  redirect '/'
+
 end
 
-post '/tasks/:id/done' do
-  task = Task.find(params[:id])
-  task.completed = true
-  task.save
+post '/posts/:id/delete' do
+  post = Post.find(params[:id])
+  post.destroy
   redirect '/'
 end
 
-post '/tasks/:id/delete' do
-  task = Task.find(params[:id])
-  task.destroy
-  redirect '/'
-end
-
-get '/tasks/:id/edit' do
-  @task = Task.find(params[:id])
+get '/posts/:id/edit' do
+  @post = Post.find(params[:id])
   erb :edit
 end
 

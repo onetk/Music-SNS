@@ -10,6 +10,12 @@
 					<p><%=music.track%></p>
 					<p><a href=<%=music.sample_url%>>サンプル</a></p>
 					<p>コメント: <%=music.comment%></p>
+					<p><a href="/posts/<%= music.id %>/edit">編集</a></p>
+
+					<form  action="/posts/<%= music.id %>/delete" method="post">
+						<input class="btn btn-default" type="submit" value='削除'>
+					</form>
+
 
 			</div>
 		<% end %>

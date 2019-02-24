@@ -1,28 +1,10 @@
-<div class="container">
-  <form action="/tasks/<%= @task.id %>" method="post">
-    <div class="controls">
-      <div class="form-group">
-        <input class="form-control input-lg" type="text" name="title" placeholder="タイトル" value="<% CGI.escapeHTML(@task.title) %>"><br>
-        <input class="form-control input-lg" type="text" name="due_date" placeholder="締切" value="<% @task.due_date %>"><br>
+<section class="center-vertical">
 
-        リスト:
-        <select name="list" class="form-control">
-          <% List.all.each  do |list| %>
-            <option value="<%= list.id %>"
-              <% if list.id == @task.list.id %>
-                selected
-              <% end %>>
-                <%= list.name %>
-            </option>
-          <% end %>
-        </select>
+	<h2>コメントの更新</h2>
 
+    <form class="form-inline" action="/posts/<%= @post.id %>" method="post">
+      <input class="form-size" name="comment">
+      <input class="form-size" type="submit" value="更新">
+    </form>
 
-
-      </div>
-      <div class="form-group col-lg-10">
-        <input class="form-control col-lg-10" type="submit" value="登録">
-      </div>
-    </div>
-  </form>
-</div>
+</section>
