@@ -16,12 +16,6 @@ helpers do
   end
 end
 
-before '/tasks' do
-  if current_user.nil?
-    redirect '/'
-  end
-end
-
 get '/' do
   @posts = Post.all
   erb :index
@@ -37,7 +31,7 @@ end
 
 post '/signup' do
   user = User.create(
-    name: params[:name],
+    name: CGI.escapeHTML(params[:name]),
     password: params[:password],
     password_confirmation: params[:password_confirmation],
     profile_image: "https://res.cloudinary.com/dcksv5swp/image/upload/v1549968178/qusyecxamstqbg0lejdz.png"
@@ -67,22 +61,6 @@ end
 
 # ---------------------------------------------------------- #
 
-get '/tasks/new' do
-  erb :new
-end
-
-post '/tasks' do
-  date = params[:due_date].split('-')
-  list = List.find(params[:list])
-  if Date.valid_date?(date[0].to_i, date[1].to_i, date[2].to_i)
-    current_user.tasks.create(title: params[:title], due_date: Date.parse(params[:due_date]), list_id: list.id)
-    redirect '/'
-  else
-    redirect '/tasks/new'
-  end
-end
-
-
 get '/post' do
   erb :index
 end
@@ -92,7 +70,9 @@ post '/post' do
   if current_user.nil? then
     redirect '/'
   else
-    current_user.posts.create(artist: params[:artist], album: params[:album],track: params[:track],sample_image: params[:sample_image], image_url: params[:image_url], sample_url: params[:sample_url], comment: params[:comment], user_name: current_user.name, user_id: current_user.id)
+
+
+    current_user.posts.create(artist: params[:artist], album: params[:album],track: params[:track],sample_image: params[:sample_image], image_url: params[:image_url], sample_url: params[:sample_url], comment: CGI.escapeHTML(params[:comment]), user_name: current_user.name, user_id: current_user.id)
   end
 
   redirect '/'
@@ -124,13 +104,6 @@ post '/tasks/:id/done' do
   redirect '/'
 end
 
-get '/tasks/:id/star' do
-  task = Task.find(params[:id])
-  task.star = !task.star
-  task.save
-  redirect '/'
-end
-
 post '/tasks/:id/delete' do
   task = Task.find(params[:id])
   task.destroy
@@ -142,21 +115,7 @@ get '/tasks/:id/edit' do
   erb :edit
 end
 
-get '/tasks/over' do
-  @lists = List.all
-  @tasks = current_user.tasks.due_over
-  erb :index
-end
-
-get '/tasks/done' do
-  @lists = List.all
-  @tasks = current_user.tasks.where(completed: true)
-  erb :index
-end
-
-
 # ---------------------------------------------------------- #
-
 
 get "/search" do
 
@@ -178,5 +137,11 @@ post "/search" do
     # p @Lists[0]#["artistName"]
   end
   erb :search
-  # redirect '/search'
+end
+
+# ---------------------------------------------------------- #
+
+get "/home" do
+  @myposts = Post.where(user_name: current_user.name)
+  erb :home
 end

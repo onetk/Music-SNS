@@ -1,13 +1,16 @@
 <section class="center-vertical">
 
 	<h2>最近の投稿</h2>
-
-		<% @posts.to_a.reverse.each do |music| %>
+		<% p @myposts %>
+		<% @myposts.to_a.reverse.each do |music| %>
 				<div class="post center-vertical">
 					<img src=<%= music.image_url%> style="padding-bottom:10px;"></img>
-					<p>artist: <%=music.artist%></p>
+					<p><%=music.artist%></p>
+					<p><%=music.album%></p>
+					<p><%=music.track%></p>
+					<p><a href=<%=music.sample_url%>>サンプル</a></p>
 					<p>コメント: <%=music.comment%></p>
-					<p>投稿者: <%=music.user_name%></p>
+
 			</div>
 		<% end %>
 

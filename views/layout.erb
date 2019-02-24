@@ -12,7 +12,7 @@
   <style>
 
 
-    nav a {
+    .nav-text {
       font-family: 'Righteous', cursive;
       color: white;
       text-decoration: none;
@@ -108,16 +108,16 @@
 </head>
 <body>
 
-  <nav class="navbar-inverse">
+  <nav class="navbar-inverse" style="border-radius: 0px;">
      <%# <div class="container-fluid"> %>
         <ul class="nav navbar-nav">
-            <li><a href="/">MUSIC SNS!!!</a></li>
+            <li><a href="/" class="nav-text">MUSIC SNS!!!</a></li>
           <% if !current_user.nil? %>
-            <li><img class="center_vertical" src="<%=current_user.profile_image%>" style="width:40px; height:40px; margin:15px 0px;"></a></li>
-            <li><a href="/search">search</a></li>
-            <li><a href="/signout">logout</a></li>
+            <li><a href="/home"><img href="/home" class="center_vertical" src="<%=current_user.profile_image%>" style="width:40px; height:40px; "></a></li>
+            <li><a href="/search" class="nav-text">search</a></li>
+            <li><a href="/signout" class="nav-text">logout</a></li>
           <% else %>
-            <li><a href="/signup">新規登録</a></li>
+            <li><a href="/signup" class="nav-text">新規登録</a></li>
           <% end %>
         </ul>
     <%# </div> %>
