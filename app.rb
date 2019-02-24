@@ -30,12 +30,30 @@ get '/signup' do
 end
 
 post '/signup' do
+
   user = User.create(
     name: CGI.escapeHTML(params[:name]),
     password: params[:password],
     password_confirmation: params[:password_confirmation],
     profile_image: "https://res.cloudinary.com/dcksv5swp/image/upload/v1549968178/qusyecxamstqbg0lejdz.png"
   )
+
+  if params[:uploaded_data] !="" then
+
+    def image_upload(img)
+      logger.info "upload now"
+
+      upload = Cloudinary::Uploader.upload(img.pathmap)
+      contents = User.last
+
+      contents.update_attribute(:img, upload['url'])
+    end
+
+    image_upload(params[:uploaded_data])
+
+  end
+
+
   if user.persisted?
     session[:user] = user.id
   end

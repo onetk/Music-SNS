@@ -12,10 +12,13 @@ gem 'sinatra-contrib'
 
 gem 'rake'
 gem 'sinatra-activerecord'
-
 gem 'bcrypt'
 
 gem 'itunes-search-api'
+gem 'sinatra-contrib'
+gem 'cloudinary'
+gem 'json'
+gem 'dotenv'
 
 group :development do
   gem 'sqlite3','~> 1.3.6'
