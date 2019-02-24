@@ -23,15 +23,7 @@ before '/tasks' do
 end
 
 get '/' do
-  @lists = List.all
-  if current_user.nil? then
-    @tasks = Task.none
-
-  elsif params[:list].nil? then
-    @tasks = current_user.tasks
-  else
-    @tasks = List.find(params[:list]).tasks.had_by(current_user)
-  end
+  @posts = Post.all
   erb :index
 end
 
@@ -88,6 +80,23 @@ post '/tasks' do
   else
     redirect '/tasks/new'
   end
+end
+
+
+get '/post' do
+  erb :index
+end
+
+post '/post' do
+
+  if current_user.nil? then
+    redirect '/'
+  else
+    current_user.posts.create(artist: params[:artist], album: params[:album],track: params[:track],sample_image: params[:sample_image], image_url: params[:image_url], sample_url: params[:sample_url], comment: params[:comment], user_name: current_user.name, user_id: current_user.id)
+  end
+
+  redirect '/'
+
 end
 
 # ---------------------------------------------------------- #
@@ -166,7 +175,7 @@ post "/search" do
     # ).each do |item|
     #   p item
     # end
-    p @Lists[0]["artistName"]
+    # p @Lists[0]#["artistName"]
   end
   erb :search
   # redirect '/search'

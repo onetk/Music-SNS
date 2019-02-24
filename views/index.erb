@@ -2,6 +2,15 @@
 
 	<h2>最近の投稿</h2>
 
+		<% @posts.each do |music| %>
+				<div class="post center-vertical">
+					<img src=<%= music.image_url%> style="padding-bottom:10px;"></img>
+					<p>artist: <%=music.artist%></p>
+					<p>コメント: <%=music.comment%></p>
+					<p>投稿者: <%=music.user_name%></p>
+			</div>
+		<% end %>
 
-		<a href="/tasks/new">新しいtodo</a>
+
+		<%# <a href="/tasks/new">新しいtodo</a> %>
 </section>
