@@ -31,13 +31,12 @@ end
 
 post '/signup' do
 
-  if params[:file] =="" then
-    img_url = "https://res.cloudinary.com/dcksv5swp/image/upload/v1549968178/qusyecxamstqbg0lejdz.png"
+  if !params[:file].match(/.+/)  then
+    img_url = "https://res.cloudinary.com/onetk/image/upload/v1551074871/illustya.png"
 
   else
     upload = Cloudinary::Uploader.upload(params[:file].pathmap)
     img_url=upload["url"]
-    # image_upload(params[:uploaded])
   end
 
   user = User.create(
